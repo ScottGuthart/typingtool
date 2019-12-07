@@ -1,0 +1,77 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block styles%}
+{{super()}}
+<style>
+  .ghost {
+    opacity: 0.4;
+    background-color:darkgrey;
+  }
+
+</style>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery-1.12.4.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sortablejs/Sortable.js') }}"></script>
+    <script>
+      var el = document.getElementById("el");
+      s = Sortable.create(el, {
+        animation: 150,
+        ghostClass: 'ghost',
+        onUpdate: function(evt){
+          var postData = s.toArray();
+          var postJSON = JSON.stringify(postData);
+          $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(postData),
+            dataType: 'json',
+            url: '/post'
+        });
+        $.post('/gettype', {
+          final: postJSON
+        }).done(function(response) {
+          document.getElementById("seg").innerHTML = response["Segment"]
+        }).fail(function() {
+          $(destElem).text("Error");
+        });
+        }
+      });
+    </script>
+{% endblock scripts %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info" role="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="container">
+  <div class="jumbotron">
+      <h1 class="display-4">Typing Tool</h1>
+      <p class="lead">This is a rapid web-based typing tool.</p>
+      <hr class="my-4">
+      <p>Simply drag and drop the items below in order of how important they are to you from <strong>most important to least important.</strong></p>
+  </div>
+  <h3 id='seg' class="alert alert-info" role="alert">Segment ?</h3>
+  <div class="container" style="max-width:90%; float: left;">
+    <div id="el" class="list-group">
+        {% for i in ordem.split('+') %}
+            <div class="list-group-item list-group-item-action" data-id="{{ i }}"><div style="font-size:1.15em; font-weight: 550;"><mark>{{ i }}</mark> {{ s[i|int-1] }}</div></div>
+        {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="container">
+    <p>
+      <a href = "{{ url_for('auth.logout') }}" class="btn btn-danger" role="button">Logout</a>
+    </p>
+</div>
+  </div>
+</div>
+{% endblock content %}
