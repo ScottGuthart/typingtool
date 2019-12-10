@@ -120,4 +120,4 @@ def resend_confirmation():
                text_body=render_template('email/activate.txt', user=current_user, confirm_url=confirm_url),
                html_body=render_template('email/activate.html', user=current_user, confirm_url=confirm_url))
     flash('A new confirmation email has been sent.')
-    return redirect(url_for('unconfirmed'))
+    return redirect(url_for('auth.unconfirmed'))
