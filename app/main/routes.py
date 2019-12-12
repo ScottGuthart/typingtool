@@ -85,8 +85,6 @@ def graph():
 @login_required
 @check_confirmed
 def plotly_graph():
-    rng = pd.date_range('1/1/2011', periods=7500, freq='H')
-    ts = pd.Series(np.random.randn(len(rng)), index=rng)
     colors = ["#7fc97f",
                 "#beaed4",
                 "#fdc086",
@@ -188,7 +186,13 @@ def plotly_graph():
             layout=dict(
                 yaxis={
                     "tickformat":',.0%'
-                }
+                },
+                margin={
+                    "l":50,
+                    "t":10,
+                    "r":10,
+                    "b":30
+                },
             )
         )
     ]
@@ -197,6 +201,22 @@ def plotly_graph():
     # Add "ids" to each of the graphs to pass up to the client
     # for templating
     ids = ['graph-{}'.format(i) for i, _ in enumerate(graphs)]
+    content = {
+        'graph-0':{
+            'title':'Dog Ownership',
+            'html':'Most <b>Playful Entertainers</b> own just one dog.'
+        },
+        'graph-1':{
+            'title':'Type of Dog Owned',
+            'html':'Here we can see a selection of the most commonly owned breeds by <b> Playful Entertainers<b>'
+        },
+        'graph-2':{
+            'title':'Owner Experience',
+            'html':'The great majority of <b>Playful Entertainers</b> are seasoned owners.'
+        },
+        'description':
+            'Playful Entertainers never want their puppy to get bored and are in search of a playtime experience that helps their dog burn-up excess energy. They want their puppy’s playtime to be an interactive experience that is intellectually stimulating and fun for the entire family. '
+    }
 
     # Convert the figures to JSON
     # PlotlyJSONEncoder appropriately converts pandas, datetime, etc
@@ -205,4 +225,5 @@ def plotly_graph():
 
     return render_template('plotly.html',
                            ids=ids,
-                           graphJSON=graphJSON)
+                           graphJSON=graphJSON,
+                           content=content)
