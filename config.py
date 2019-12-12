@@ -6,9 +6,9 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    MAIL_SERVER = os.environ.get('MAIL_SERVER') or None
     MAIL_PORT = int(os.environ.get('MAIL_PORT'))
-    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS')
     MAIL_USERNAME=os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD')
     SECURITY_PASSWORD_SALT=os.environ.get('SECURITY_PASSWORD_SALT')

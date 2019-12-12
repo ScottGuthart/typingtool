@@ -1,0 +1,7 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block content %}
+{% for graph in graphs %}
+<embed type="image/svg+xml" src={{graph|safe}} style="max-width: 300px;" />
+{% endfor %}
+{% endblock %}
