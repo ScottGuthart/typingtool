@@ -38,6 +38,7 @@ t = "?"
 def index():
     sort = Sortable.query.filter_by(id=1).first()
     ordem = str(sort.data)
+    print(ordem)
 
     return render_template("index.html", ordem=ordem, s=s, t=t)
 
