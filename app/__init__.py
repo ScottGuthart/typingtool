@@ -1,3 +1,4 @@
+from email import header
 import os
 from flask import Flask, request, current_app
 from flask_sqlalchemy import SQLAlchemy
@@ -14,7 +15,7 @@ login.login_view = "auth.login"
 mail = Mail()
 bootstrap = Bootstrap()
 migrate = Migrate()
-cors = CORS()
+cors = CORS(origins=r"https://.*.officescripts.microsoftusercontent.com")
 
 
 def create_app(config_class=Config):
